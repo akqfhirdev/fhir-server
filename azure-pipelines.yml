@@ -24,7 +24,7 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'FHIRCONTAINER'
-        repository: 'MSFHIR'
+        repository: 'MSFHIRR4'
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile.R4'
         tags: |
