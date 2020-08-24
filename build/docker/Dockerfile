@@ -6,6 +6,7 @@ WORKDIR /src
 
 COPY ./ ./
 
+RUN ls -R
 RUN dotnet build "./Microsoft.Health.Fhir.sln" --configuration Release
 RUN dotnet publish "./src/Microsoft.Health.Fhir.${FHIR_VERSION}.Web/Microsoft.Health.Fhir.${FHIR_VERSION}.Web.csproj" -c Release -o "/build" --no-build
 
