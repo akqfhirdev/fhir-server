@@ -17,16 +17,39 @@ namespace Microsoft.Health.Fhir.Core.Features.Operations.Export.Models
     /// </summary>
     public class ExportJobRecord : JobRecord
     {
-        public ExportJobRecord(Uri requestUri, string resourceType, string hash, IReadOnlyCollection<KeyValuePair<string, string>> requestorClaims = null, PartialDateTime since = null)
+        public ExportJobRecord(
+            Uri requestUri,
+            ExportJobType exportType,
+            string resourceType,
+            string hash,
+            IReadOnlyCollection<KeyValuePair<string, string>> requestorClaims = null,
+            PartialDateTime since = null,
+            string groupId = null,
+            string storageAccountConnectionHash = null,
+            string storageAccountUri = null,
+            string anonymizationConfigurationLocation = null,
+            string anonymizationConfigurationFileETag = null,
+            uint maximumNumberOfResourcesPerQuery = 100,
+            uint numberOfPagesPerCommit = 10,
+            string storageAccountContainerName = null)
         {
             EnsureArg.IsNotNull(requestUri, nameof(requestUri));
             EnsureArg.IsNotNullOrWhiteSpace(hash, nameof(hash));
 
             Hash = hash;
             RequestUri = requestUri;
+            ExportType = exportType;
             ResourceType = resourceType;
             RequestorClaims = requestorClaims;
             Since = since;
+            GroupId = groupId;
+            StorageAccountConnectionHash = storageAccountConnectionHash;
+            StorageAccountUri = storageAccountUri;
+            MaximumNumberOfResourcesPerQuery = maximumNumberOfResourcesPerQuery;
+            NumberOfPagesPerCommit = numberOfPagesPerCommit;
+
+            AnonymizationConfigurationLocation = anonymizationConfigurationLocation;
+            AnonymizationConfigurationFileETag = anonymizationConfigurationFileETag;
 
             // Default values
             SchemaVersion = 1;
@@ -34,6 +57,15 @@ namespace Microsoft.Health.Fhir.Core.Features.Operations.Export.Models
             Status = OperationStatus.Queued;
 
             QueuedTime = Clock.UtcNow;
+
+            if (string.IsNullOrWhiteSpace(storageAccountContainerName))
+            {
+                StorageAccountContainerName = Id;
+            }
+            else
+            {
+                StorageAccountContainerName = storageAccountContainerName;
+            }
         }
 
         [JsonConstructor]
@@ -43,6 +75,9 @@ namespace Microsoft.Health.Fhir.Core.Features.Operations.Export.Models
 
         [JsonProperty(JobRecordProperties.RequestUri)]
         public Uri RequestUri { get; private set; }
+
+        [JsonProperty(JobRecordProperties.ExportType)]
+        public ExportJobType ExportType { get; private set; }
 
         [JsonProperty(JobRecordProperties.ResourceType)]
         public string ResourceType { get; private set; }
@@ -64,5 +99,33 @@ namespace Microsoft.Health.Fhir.Core.Features.Operations.Export.Models
 
         [JsonProperty(JobRecordProperties.Since)]
         public PartialDateTime Since { get; private set; }
+
+        [JsonProperty(JobRecordProperties.GroupId)]
+        public string GroupId { get; private set; }
+
+        [JsonProperty(JobRecordProperties.StorageAccountConnectionHash)]
+        public string StorageAccountConnectionHash { get; private set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "CA1056:Uri properties should not be strings",
+            Justification = "Set from an ExportJobConfiguration where the value is a string and is never used as a URI.")]
+        [JsonProperty(JobRecordProperties.StorageAccountUri)]
+        public string StorageAccountUri { get; private set; }
+
+        [JsonProperty(JobRecordProperties.MaximumNumberOfResourcesPerQuery)]
+        public uint MaximumNumberOfResourcesPerQuery { get; private set; }
+
+        [JsonProperty(JobRecordProperties.NumberOfPagesPerCommit)]
+        public uint NumberOfPagesPerCommit { get; private set; }
+
+        [JsonProperty(JobRecordProperties.StorageAccountContainerName)]
+        public string StorageAccountContainerName { get; private set; }
+
+        [JsonProperty(JobRecordProperties.AnonymizationConfigurationLocation)]
+        public string AnonymizationConfigurationLocation { get; private set; }
+
+        [JsonProperty(JobRecordProperties.AnonymizationConfigurationFileETag)]
+        public string AnonymizationConfigurationFileETag { get; private set; }
     }
 }
