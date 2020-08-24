@@ -7,7 +7,7 @@ WORKDIR /src
 COPY ./ ./
 
 RUN dotnet build --configuration Release
-RUN dotnet publish "./src/Microsoft.Health.Fhir.${FHIR_VERSION}.Web/Microsoft.Health.Fhir.${FHIR_VERSION}.Web.csproj" -c Release -o "/build" --no-build
+RUN dotnet publish "./src/Microsoft.Health.Fhir.R4.Web/Microsoft.Health.Fhir.R4.Web.csproj" -c Release -o "/build" --no-build
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS runtime
 
@@ -25,7 +25,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
 WORKDIR /app
 COPY --from=build /build .
 
-RUN ln -s "Microsoft.Health.Fhir.${FHIR_VERSION}.Web.dll" "Microsoft.Health.Fhir.Web.dll"
+RUN ln -s "Microsoft.Health.Fhir.R4.Web.dll" "Microsoft.Health.Fhir.Web.dll"
 
 USER nonroot
 EXPOSE 8080
