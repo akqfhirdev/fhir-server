@@ -23,7 +23,9 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
-        command: build
+        containerRegistry: 'FHIRCONTAINER'
+        repository: 'MSFHIRR4'
+        command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile.R4'
         tags: |
           $(tag)
