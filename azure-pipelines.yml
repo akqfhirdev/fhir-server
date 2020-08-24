@@ -25,5 +25,7 @@ stages:
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        args:
+            FHIR_VERSION: $(FHIR_VERSION)
         tags: |
           $(tag)
