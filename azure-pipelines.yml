@@ -27,5 +27,5 @@ stages:
         repository: 'MSFHIRR4'
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile.R4'
-        tags: |
+        tags: latest |
           $(tag)
