@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  tag: 'latest'
 
 stages:
 - stage: Build
@@ -27,5 +27,5 @@ stages:
         repository: 'MSFHIRR4'
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile.R4'
-        tags: latest |
+        tags: |
           $(tag)
