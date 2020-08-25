@@ -19,8 +19,6 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
 WORKDIR /app
 COPY --from=build /build .
 
-RUN ln -s "Microsoft.Health.Fhir.R4.Web.dll" "Microsoft.Health.Fhir.Web.dll"
-
 USER nonroot
 EXPOSE 8080
-ENTRYPOINT ["dotnet", "Microsoft.Health.Fhir.Web.dll"]
+ENTRYPOINT ["dotnet", "Microsoft.Health.Fhir.R4.Web.dll"]
